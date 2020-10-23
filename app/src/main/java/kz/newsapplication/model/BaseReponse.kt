@@ -7,3 +7,9 @@ class BaseResponse<T>(
     @SerializedName("totalResults") val totalResults: Int?,
     @SerializedName("articles") val articles: T?
 )
+
+data class ErrorResponse(
+    @SerializedName("status") val status: String,
+    @SerializedName("code") val code: String?,
+    @SerializedName("message") val message: String?
+)

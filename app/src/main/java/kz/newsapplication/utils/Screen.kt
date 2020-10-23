@@ -2,7 +2,6 @@ package kz.newsapplication.utils
 
 enum class Screen {
     MAIN_FRAGMENT,
-    TOP_HEADLINES,
-    EVERYTHING,
-    FAVORITES
+    FAVORITES,
+    TOP_HEADLINES_DETAILS
 }

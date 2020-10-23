@@ -3,4 +3,5 @@
     <string name="top_headlines">Top Headlines</string>
     <string name="everything">Everything</string>
     <string name="no_internet_connection">No internet connection</string>
+    <string name="list_is_empty">List is empty</string>
 </resources>

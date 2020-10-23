@@ -12,7 +12,7 @@ import com.mobile.telecomapp.utils.NavigationAnimation
 import kz.newsapplication.R
 import kz.newsapplication.ui.everything.EverythingFragment
 import kz.newsapplication.ui.favorites.FavoritesFragment
-import kz.newsapplication.ui.top_headlines.TopHeadlinesFragment
+import kz.newsapplication.ui.top_headlienes.TopHeadlinesFragment
 import kz.newsapplication.utils.BasePagerAdapter
 import kz.newsapplication.utils.Screen
 
@@ -23,12 +23,22 @@ class MainFragment: Fragment() {
             MainFragment().apply {
                 arguments = data
             }
+
+        const val TOP_HEAD_LINES = 0
+        const val EVERYTHING = 1
     }
 
     private lateinit var viewPager: ViewPager
     private lateinit var tabLayout: TabLayout
     private lateinit var ivFavorite: ImageView
     private lateinit var mainPagerAdapter: BasePagerAdapter
+
+    val fragments: List<Fragment> = listOf(
+        TopHeadlinesFragment.newInstance(),
+        EverythingFragment.newInstance()
+    )
+
+    var currentPage = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,10 +70,6 @@ class MainFragment: Fragment() {
     }
 
     private fun setAdapter() {
-        val fragments: List<Fragment> = listOf(
-            TopHeadlinesFragment.newInstance(),
-            EverythingFragment.newInstance()
-        )
         val titles = listOf(
             getString(R.string.top_headlines),
             getString(R.string.everything)
@@ -72,5 +78,28 @@ class MainFragment: Fragment() {
         viewPager.adapter = mainPagerAdapter
         viewPager.offscreenPageLimit = fragments.size
         tabLayout.setupWithViewPager(viewPager)
+        reduceMarginsInTabs(tabLayout, 28)
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) { }
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) { }
+            override fun onPageSelected(position: Int) {
+                currentPage = position
+            }
+        })
+    }
+
+    private fun reduceMarginsInTabs(tabLayout: TabLayout, marginOffset: Int) {
+        if (tabLayout.childCount < 0) return
+        val tabStrip = tabLayout.getChildAt(0)
+        if (tabStrip is ViewGroup) {
+            for (i in 0 until tabStrip.childCount) {
+                val tabView = tabStrip.getChildAt(i)
+                if (tabView.layoutParams is ViewGroup.MarginLayoutParams) {
+                    (tabView.layoutParams as ViewGroup.MarginLayoutParams).leftMargin = marginOffset
+                    (tabView.layoutParams as ViewGroup.MarginLayoutParams).rightMargin = marginOffset
+                }
+            }
+            tabLayout.requestLayout()
+        }
     }
 }

@@ -12,7 +12,7 @@ interface NewsApi {
     @GET("top-headlines")
     fun getTopHeadlines(
         @Query("country") country: String? = "us",
-        @Query("apiKey") apiKey: String = "e65ee0938a2a43ebb15923b48faed18d",
+        @Query("apiKey") apiKey: String = "28a6814ea05744f6a7dfc1612dc04551",
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int
     ): Single<Response<BaseResponse<List<News>>>>
@@ -20,7 +20,7 @@ interface NewsApi {
     @GET("everything")
     fun getEverything(
         @Query("q") q: String? = "apple",
-        @Query("apiKey") apiKey: String = "e65ee0938a2a43ebb15923b48faed18d",
+        @Query("apiKey") apiKey: String = "28a6814ea05744f6a7dfc1612dc04551",
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int
     ): Single<Response<BaseResponse<List<News>>>>
