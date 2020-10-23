@@ -14,7 +14,7 @@ import kz.newsapplication.model.converters.SourceTypeConverter
 abstract class NewsDatabase : RoomDatabase() {
 
     companion object {
-        private const val DATABASE_NAME = "database3"
+        private const val DATABASE_NAME = "database"
 
         fun getDatabase(context: Context): NewsDatabase {
             return Room.databaseBuilder(context, NewsDatabase::class.java, DATABASE_NAME)

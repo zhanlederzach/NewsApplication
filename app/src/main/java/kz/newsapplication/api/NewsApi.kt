@@ -12,15 +12,15 @@ interface NewsApi {
     @GET("top-headlines")
     fun getTopHeadlines(
         @Query("country") country: String? = "us",
-        @Query("apiKey") apiKey: String = "28a6814ea05744f6a7dfc1612dc04551",
+        @Query("apiKey") apiKey: String = "f9a95087e218416aa8f1ad6bb1fd62e3",
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int
     ): Single<Response<BaseResponse<List<News>>>>
 
     @GET("everything")
     fun getEverything(
-        @Query("q") q: String? = "apple",
-        @Query("apiKey") apiKey: String = "28a6814ea05744f6a7dfc1612dc04551",
+        @Query("q") q: String? = "bitcoin",
+        @Query("apiKey") apiKey: String = "f9a95087e218416aa8f1ad6bb1fd62e3 ",
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int
     ): Single<Response<BaseResponse<List<News>>>>

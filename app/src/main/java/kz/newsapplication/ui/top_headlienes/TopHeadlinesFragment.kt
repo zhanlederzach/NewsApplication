@@ -15,7 +15,6 @@ import kz.newsapplication.model.News
 import kz.newsapplication.ui.MainActivity
 import kz.newsapplication.ui.NewsState
 import kz.newsapplication.ui.NewsViewModel
-import kz.newsapplication.ui.top_headlienes.TopHeadlinesBaseAdapter.Companion.TOP_HEAD_LINE
 import kz.newsapplication.ui.top_headlienes.top_headliens_details.TopHeadliensDetailsFragment
 import kz.newsapplication.utils.Constants
 import kz.newsapplication.utils.Screen
@@ -39,7 +38,7 @@ class TopHeadlinesFragment : Fragment(), KoinComponent {
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     private val newsAdapter by lazy {
-        TopHeadlinesBaseAdapter(type = TOP_HEAD_LINE, onFavoriteClickListener = onFavoriteClickListener)
+        TopHeadlinesBaseAdapter(onFavoriteClickListener = onFavoriteClickListener)
     }
 
     private val viewModel: NewsViewModel by inject()

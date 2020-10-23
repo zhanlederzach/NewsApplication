@@ -17,12 +17,12 @@ import kz.newsapplication.ui.NewsState
 import kz.newsapplication.ui.NewsViewModel
 import kz.newsapplication.ui.top_headlienes.OnFavoriteClickListener
 import kz.newsapplication.ui.top_headlienes.TopHeadlinesBaseAdapter
-import kz.newsapplication.ui.top_headlienes.TopHeadlinesBaseAdapter.Companion.EVERYTHING
 import kz.newsapplication.ui.top_headlienes.top_headliens_details.TopHeadliensDetailsFragment
 import kz.newsapplication.utils.Constants
 import kz.newsapplication.utils.Likeable
 import kz.newsapplication.utils.Screen
 import kz.newsapplication.utils.extensions.showTopToast
+import kz.newsapplication.utils.widgets.AppLoadMoreView
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.util.ArrayList
@@ -58,7 +58,7 @@ class EverythingFragment : Fragment(), KoinComponent, Likeable {
     }
 
     private val newsAdapter by lazy {
-        TopHeadlinesBaseAdapter(type = EVERYTHING, onFavoriteClickListener = onFavoriteClickListener)
+        TopHeadlinesBaseAdapter(onFavoriteClickListener = onFavoriteClickListener)
     }
 
     override fun onCreateView(
@@ -83,6 +83,7 @@ class EverythingFragment : Fragment(), KoinComponent, Likeable {
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
 
         swipeRefreshLayout.setOnRefreshListener {
+            newsAdapter.clearAll()
             newsAdapter.setNewData(ArrayList())
             viewModel.getEverything(isRefresh = true)
         }
@@ -103,9 +104,12 @@ class EverythingFragment : Fragment(), KoinComponent, Likeable {
                 )
                 lastPressedPosition = position
             }
+            setEnableLoadMore(true)
+            setLoadMoreView(AppLoadMoreView())
             setOnLoadMoreListener({
                 viewModel.getEverything()
             }, recyclerView)
+            setHasStableIds(true)
         }
         recyclerView.layoutManager = LinearLayoutManager(
             requireContext(),
@@ -132,8 +136,8 @@ class EverythingFragment : Fragment(), KoinComponent, Likeable {
                 }
                 is NewsState.LoadMoreFinished -> {
                     newsAdapter.apply {
-                        loadMoreEnd(false)
                         loadMoreComplete()
+                        loadMoreEnd(false)
                     }
                 }
                 is NewsState.LoadMoreResult -> {

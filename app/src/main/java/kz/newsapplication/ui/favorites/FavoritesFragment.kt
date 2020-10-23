@@ -18,7 +18,6 @@ import kz.newsapplication.ui.NewsState
 import kz.newsapplication.ui.NewsViewModel
 import kz.newsapplication.ui.top_headlienes.OnFavoriteClickListener
 import kz.newsapplication.ui.top_headlienes.TopHeadlinesBaseAdapter
-import kz.newsapplication.ui.top_headlienes.TopHeadlinesBaseAdapter.Companion.FAVORITES
 import kz.newsapplication.ui.top_headlienes.top_headliens_details.TopHeadliensDetailsFragment
 import kz.newsapplication.utils.Constants
 import kz.newsapplication.utils.Likeable
@@ -60,7 +59,7 @@ class FavoritesFragment : Fragment(), KoinComponent, Likeable {
     }
 
     private val newsAdapter by lazy {
-        TopHeadlinesBaseAdapter(type = FAVORITES, onFavoriteClickListener = onFavoriteClickListener)
+        TopHeadlinesBaseAdapter(onFavoriteClickListener = onFavoriteClickListener)
     }
 
     private val viewModel: NewsViewModel by inject()

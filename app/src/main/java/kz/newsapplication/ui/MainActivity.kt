@@ -50,19 +50,21 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         var isFavorite: Boolean? = null
-        if (currentFragment != null && currentFragment is TopHeadliensDetailsFragment) {
-            isFavorite = (currentFragment as TopHeadliensDetailsFragment).isFavorite
+        when (currentFragment) {
+            is TopHeadliensDetailsFragment -> {
+                isFavorite = (currentFragment as TopHeadliensDetailsFragment).isFavorite
+            }
         }
-
         super.onBackPressed()
-
-        if (isFavorite != null && supportFragmentManager.primaryNavigationFragment != null) {
-            when (supportFragmentManager.primaryNavigationFragment) {
-                is MainFragment -> {
+        when (supportFragmentManager.primaryNavigationFragment) {
+            is MainFragment -> {
+                if (isFavorite != null) {
                     ((supportFragmentManager.primaryNavigationFragment as MainFragment).fragments[MainFragment.EVERYTHING] as Likeable)
                         .setLike(isFavorite)
                 }
-                is FavoritesFragment -> {
+            }
+            is FavoritesFragment -> {
+                if (isFavorite != null) {
                     ((supportFragmentManager.primaryNavigationFragment as FavoritesFragment) as Likeable)
                         .setLike(isFavorite)
                 }

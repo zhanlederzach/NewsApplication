@@ -20,20 +20,18 @@ class NewsViewModel(
         const val TAG = "top_head_view_model"
     }
 
-    val liveData by lazy {
-        MutableLiveData<NewsState>()
-    }
-
     val liveDataPeriodic by lazy {
         MutableLiveData<NewsState>()
     }
 
+    val liveData by lazy {
+        MutableLiveData<NewsState>()
+    }
     private var currentPage = Constants.DEFAULT_PAGE
 
     val liveDataEverything by lazy {
         MutableLiveData<NewsState>()
     }
-
     private var currentPageEverything = Constants.DEFAULT_PAGE
 
     fun getEverything(isRefresh: Boolean = false) {
@@ -48,19 +46,23 @@ class NewsViewModel(
                         liveDataEverything.value = NewsState.ShowLoading
                     }
                 }
-                .doFinally { liveDataEverything.value = NewsState.HideLoading }
+                .doFinally {
+                    liveDataEverything.value = NewsState.HideLoading
+                }
                 .subscribe({
+                    Log.d(TAG, it.toString())
                     if (currentPageEverything == Constants.DEFAULT_PAGE) {
                         liveDataEverything.value = NewsState.NewsResult(it)
                     } else {
                         if (it.isEmpty()) {
                             liveDataEverything.value = NewsState.LoadMoreFinished
                         } else {
-                            liveData.value = NewsState.LoadMoreResult(it)
+                            liveDataEverything.value = NewsState.LoadMoreResult(it)
                         }
                     }
                     currentPageEverything++
                 }, { error ->
+                    Log.d(TAG, error.message.toString())
                     liveDataEverything.value = NewsState.Error(error.message)
                     liveDataEverything.value = NewsState.LoadMoreFinished
                 })
@@ -104,7 +106,7 @@ class NewsViewModel(
 
     fun getTopHeadlinesPeriodic() {
         disposables.add(
-            Flowable.interval(5000, 20000, TimeUnit.MILLISECONDS, Schedulers.io())
+            Flowable.interval(5000, 5000, TimeUnit.MILLISECONDS, Schedulers.io())
                 .flatMap {
                     newsRepository.getTopHeadNews(
                         page = Constants.DEFAULT_PAGE,
@@ -115,6 +117,7 @@ class NewsViewModel(
                 .compose(applySchedulersFlowable())
                 .subscribe(
                     { result ->
+                        Log.d(TAG, "getTopHeadlinesPeriodic: ");
                         liveDataPeriodic.value = NewsState.NewsResult(result)
                     },
                     { error ->

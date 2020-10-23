@@ -19,21 +19,9 @@ interface OnFavoriteClickListener {
     fun onFavoriteClick(position: Int, news: News)
 }
 
-class TopHeadlinesBaseAdapter(type: Int,
-                              private val onFavoriteClickListener: OnFavoriteClickListener? = null
-) : BaseQuickAdapter<News, BaseViewHolder>(
-    when (type) {
-        TOP_HEAD_LINE -> { R.layout.item_top_headline }
-        EVERYTHING -> { R.layout.item_favorites }
-        else -> { R.layout.item_favorites }
-    }
-) {
-
-    companion object {
-        const val TOP_HEAD_LINE = 1
-        const val EVERYTHING = 2
-        const val FAVORITES = 3
-    }
+class TopHeadlinesBaseAdapter(
+    private val onFavoriteClickListener: OnFavoriteClickListener
+) : BaseQuickAdapter<News, BaseViewHolder>(R.layout.item_top_headline) {
 
     override fun convert(helper: BaseViewHolder, item: News) {
         if (helper.layoutPosition == 0) {
@@ -51,7 +39,7 @@ class TopHeadlinesBaseAdapter(type: Int,
             getView<TextView>(R.id.tvDescription).text = item.description
             getView<TextView>(R.id.tvDatePublished).text = DateUtil.convertIsoToDate(item.publishedAt)
             getView<ImageView>(R.id.ivFavorite).setOnClickListener {
-                onFavoriteClickListener?.onFavoriteClick(adapterPosition, item)
+                onFavoriteClickListener.onFavoriteClick(adapterPosition, item)
             }
             setImageFavorite(getView(R.id.ivFavorite), item.isFavorite)
             Glide
